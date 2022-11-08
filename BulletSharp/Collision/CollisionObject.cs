@@ -1,6 +1,6 @@
 using System;
 using System.Runtime.InteropServices;
-using System.Numerics;
+using Evergine.Mathematics;
 using static BulletSharp.UnsafeNativeMethods;
 
 namespace BulletSharp
@@ -58,7 +58,7 @@ namespace BulletSharp
 		private BroadphaseProxy _broadphaseHandle;
 		protected CollisionShape _collisionShape;
 
-		internal static CollisionObject GetManaged(IntPtr obj)
+		public static CollisionObject GetManaged(IntPtr obj)
 		{
 			if (obj == IntPtr.Zero)
 			{

@@ -418,6 +418,8 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btVoronoiSimplexSolver_wrap.h
     src/btWheelInfo_wrap.cpp
     src/btWheelInfo_wrap.h
+	src/btEvergineContact_wrap.cpp
+    src/btEvergineContact_wrap.h
     src/btWorldImporter_wrap.cpp
     src/btWorldImporter_wrap.h
     src/hacdHACD_wrap.cpp

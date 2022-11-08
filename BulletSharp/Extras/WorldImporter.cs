@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Numerics;
+using Evergine.Mathematics;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -554,8 +554,8 @@ namespace BulletSharp
                     Matrix4x4 rbaFrame = rigidBodyA.WorldTransform;
                     Matrix4x4 rbbFrame = rigidBodyB.WorldTransform;
                     Matrix4x4 sharedFrame = Matrix4x4.CreateTranslation(0.5f * (rbaFrame.Translation + rbbFrame.Translation));
-                    Matrix4x4.Invert(rbaFrame, out rbaFrame);
-                    Matrix4x4.Invert(rbbFrame, out rbbFrame);
+                    rbaFrame.Invert();
+                    rbbFrame.Invert();
                     rbaFrame = rbaFrame * sharedFrame;
                     rbbFrame = rbbFrame * sharedFrame;
                     Generic6DofSpring2Constraint dof = new Generic6DofSpring2Constraint(rigidBodyA, rigidBodyB, rbaFrame, rbbFrame, RotateOrder.XYZ)

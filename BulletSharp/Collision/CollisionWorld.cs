@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Security;
-using System.Numerics;
+using Evergine.Mathematics;
 using static BulletSharp.UnsafeNativeMethods;
 
 namespace BulletSharp
@@ -467,7 +467,7 @@ namespace BulletSharp
 		}
 	}
 
-	public class CollisionWorld : BulletDisposableObject
+	public partial class CollisionWorld : BulletDisposableObject
 	{
 		private DebugDraw _debugDrawer;
 		private BroadphaseInterface _broadphase;

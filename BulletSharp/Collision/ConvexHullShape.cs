@@ -1,12 +1,12 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Collections.Generic;
-using System.Numerics;
+using Evergine.Mathematics;
 using static BulletSharp.UnsafeNativeMethods;
 
 namespace BulletSharp
 {
-	public class ConvexHullShape : PolyhedralConvexAabbCachingShape
+	public partial class ConvexHullShape : PolyhedralConvexAabbCachingShape
 	{
 		private Vector3Array _unscaledPoints;
 

@@ -4,7 +4,11 @@ namespace BulletSharp
 {
     public static class Native
     {
-        public const string Dll = "libbulletc";
+#if IOS
+        public const string Dll = "__Internal";
+#else
+        public const string Dll = "libbulletc.dll";
+#endif
         public const CallingConvention Conv = CallingConvention.Cdecl;
     }
 }

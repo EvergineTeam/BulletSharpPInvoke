@@ -24,12 +24,12 @@
 using System;
 using System.Security;
 using System.Runtime.InteropServices;
-using System.Numerics;
+using Evergine.Mathematics;
 using static BulletSharp.UnsafeNativeMethods;
 
 namespace BulletSharp
 {
-	public abstract class DebugDraw : BulletDisposableObject
+	public abstract partial class DebugDraw : BulletDisposableObject
 	{
 		[UnmanagedFunctionPointer(BulletSharp.Native.Conv), SuppressUnmanagedCodeSecurity]
 		delegate void DrawAabbUnmanagedDelegate([In] ref Vector3 from, [In] ref Vector3 to, [In] ref Vector3 color);

@@ -23,7 +23,7 @@
 
 using System;
 using System.Diagnostics;
-using System.Numerics;
+using Evergine.Mathematics;
 using System.Runtime.InteropServices;
 
 namespace BulletSharp

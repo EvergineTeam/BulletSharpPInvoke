@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Description>Provides a wrapper for the BulletSharp physics component</Description>
+    <DisableStyleCop>true</DisableStyleCop>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Evergine.Common\Evergine.Common.csproj" />
+    <ProjectReference Include="..\..\Common\Evergine.Mathematics\Evergine.Mathematics.csproj" />
+  </ItemGroup>
+
+</Project>
