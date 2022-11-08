@@ -58,7 +58,7 @@ namespace BulletSharp
 		private BroadphaseProxy _broadphaseHandle;
 		protected CollisionShape _collisionShape;
 
-		public static CollisionObject GetManaged(IntPtr obj)
+		internal static CollisionObject GetManaged(IntPtr obj)
 		{
 			if (obj == IntPtr.Zero)
 			{

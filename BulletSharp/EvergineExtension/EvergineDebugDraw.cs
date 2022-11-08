@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Security;
+using Evergine.Common.Attributes;
 using Evergine.Mathematics;
+using static BulletSharp.UnsafeNativeMethods;
 using static BulletSharp.EvergineUnsafeNativeMethods;
 
 
@@ -12,6 +14,24 @@ namespace BulletSharp
 {
     public abstract partial class DebugDraw : BulletDisposableObject
     {
+        private static DebugDraw instance;
+
+        /// <summary>
+        /// The static instance;
+        /// </summary>
+        public static DebugDraw Instance
+        {
+            get
+            {
+                return DebugDraw.instance;
+            }
+
+            set
+            {
+                DebugDraw.instance = value;
+            }
+        }
+
         protected DefaultColors DefaultColors
         {
             set
@@ -22,6 +42,141 @@ namespace BulletSharp
                     btIDebugDraw_setDefaultColors(this.Native, new IntPtr((void*)&debugDraw));
                 }
             }
+        }
+
+        // This constructor is defined only to change the way of delegates are created.
+        public DebugDraw(bool _)
+        {
+            _drawAabb = new DrawAabbUnmanagedDelegate(DrawAabbInternal);
+            _drawArc = new DrawArcUnmanagedDelegate(DrawArcInternal);
+            _drawBox = new DrawBoxUnmanagedDelegate(DrawBoxInternal);
+            _drawCapsule = new DrawCapsuleUnmanagedDelegate(DrawCapsuleInternal);
+            _drawCone = new DrawConeUnmanagedDelegate(DrawConeInternal);
+            _drawContactPoint = new DrawContactPointUnmanagedDelegate(DrawContactPointInternal);
+            _drawCylinder = new DrawCylinderUnmanagedDelegate(DrawCylinderInternal);
+            _drawLine = new DrawLineUnmanagedDelegate(DrawLineInternal);
+            _drawPlane = new DrawPlaneUnmanagedDelegate(DrawPlaneInternal);
+            _drawSphere = new DrawSphereUnmanagedDelegate(DrawSphereInternal);
+            _drawSpherePatch = new DrawSpherePatchUnmanagedDelegate(DrawSpherePatchInternal);
+            _drawTransform = new DrawTransformUnmanagedDelegate(DrawTransformInternal);
+            _drawTriangle = new DrawTriangleUnmanagedDelegate(DrawTriangleInternal);
+            _getDebugMode = new GetDebugModeUnmanagedDelegate(GetDebugModeUnmanagedInternal);
+            _cb = new SimpleCallback(SimpleCallbackUnmanagedInternal);
+
+            IntPtr native = btIDebugDrawWrapper_new(
+                GCHandle.ToIntPtr(GCHandle.Alloc(this)),
+                Marshal.GetFunctionPointerForDelegate(_drawAabb),
+                Marshal.GetFunctionPointerForDelegate(_drawArc),
+                Marshal.GetFunctionPointerForDelegate(_drawBox),
+                Marshal.GetFunctionPointerForDelegate(_drawCapsule),
+                Marshal.GetFunctionPointerForDelegate(_drawCone),
+                Marshal.GetFunctionPointerForDelegate(_drawContactPoint),
+                Marshal.GetFunctionPointerForDelegate(_drawCylinder),
+                Marshal.GetFunctionPointerForDelegate(_drawLine),
+                Marshal.GetFunctionPointerForDelegate(_drawPlane),
+                Marshal.GetFunctionPointerForDelegate(_drawSphere),
+                Marshal.GetFunctionPointerForDelegate(_drawSpherePatch),
+                Marshal.GetFunctionPointerForDelegate(_drawTransform),
+                Marshal.GetFunctionPointerForDelegate(_drawTriangle),
+                Marshal.GetFunctionPointerForDelegate(_getDebugMode),
+                Marshal.GetFunctionPointerForDelegate(_cb));
+            InitializeUserOwned(native);
+        }
+
+        [MonoPInvokeCallback(typeof(DrawLineUnmanagedDelegate))]
+        private static void DrawLineInternal(ref Vector3 from, ref Vector3 to, ref Vector3 color)
+        {
+            DebugDraw.instance?.DrawLine(ref from, ref to, ref color);
+        }
+
+        [MonoPInvokeCallback(typeof(DrawAabbUnmanagedDelegate))]
+        public static void DrawAabbInternal(ref Vector3 from, ref Vector3 to, ref Vector3 color)
+        {
+            DebugDraw.instance?.DrawAabb(ref from, ref to, ref color);
+        }
+
+        [MonoPInvokeCallback(typeof(DrawArcUnmanagedDelegate))]
+        public static void DrawArcInternal(ref Vector3 center, ref Vector3 normal, ref Vector3 axis, float radiusA, float radiusB, float minAngle, float maxAngle, ref Vector3 color, bool drawSect, float stepDegrees)
+        {
+            DebugDraw.instance?.DrawArc(ref center, ref normal, ref axis, radiusA, radiusB, minAngle, maxAngle, ref color, drawSect, stepDegrees);
+        }
+
+        [MonoPInvokeCallback(typeof(DrawBoxUnmanagedDelegate))]
+        public static void DrawBoxInternal(ref Vector3 bbMin, ref Vector3 bbMax, ref Matrix4x4 trans, ref Vector3 color)
+        {
+            DebugDraw.instance?.DrawBox(ref bbMin, ref bbMax, ref trans, ref color);
+        }
+
+        [MonoPInvokeCallback(typeof(DrawCapsuleUnmanagedDelegate))]
+        public static void DrawCapsuleInternal(float radius, float halfHeight, int upAxis, ref Matrix4x4 transform, ref Vector3 color)
+        {
+            DebugDraw.instance?.DrawCapsule(radius, halfHeight, upAxis, ref transform, ref color);
+        }
+
+        [MonoPInvokeCallback(typeof(DrawConeUnmanagedDelegate))]
+        public static void DrawConeInternal(float radius, float height, int upAxis, ref Matrix4x4 transform, ref Vector3 color)
+        {
+            DebugDraw.instance?.DrawCone(radius, height, upAxis, ref transform, ref color);
+        }
+
+        [MonoPInvokeCallback(typeof(DrawContactPointUnmanagedDelegate))]
+        public static void DrawContactPointInternal(ref Vector3 pointOnB, ref Vector3 normalOnB, float distance, int lifeTime, ref Vector3 color)
+        {
+            DebugDraw.instance?.DrawContactPoint(ref pointOnB, ref normalOnB, distance, lifeTime, ref color);
+        }
+
+        [MonoPInvokeCallback(typeof(DrawCylinderUnmanagedDelegate))]
+        public static void DrawCylinderInternal(float radius, float halfHeight, int upAxis, ref Matrix4x4 transform, ref Vector3 color)
+        {
+            DebugDraw.instance?.DrawCylinder(radius, halfHeight, upAxis, ref transform, ref color);
+        }
+
+        [MonoPInvokeCallback(typeof(DrawPlaneUnmanagedDelegate))]
+        public static void DrawPlaneInternal(ref Vector3 planeNormal, float planeConst, ref Matrix4x4 transform, ref Vector3 color)
+        {
+            DebugDraw.instance?.DrawPlane(ref planeNormal, planeConst, ref transform, ref color);
+        }
+
+        [MonoPInvokeCallback(typeof(DrawSphereUnmanagedDelegate))]
+        public static void DrawSphereInternal(float radius, ref Matrix4x4 transform, ref Vector3 color)
+        {
+            DebugDraw.instance?.DrawSphere(radius, ref transform, ref color);
+        }
+
+        [MonoPInvokeCallback(typeof(DrawSpherePatchUnmanagedDelegate))]
+        public static void DrawSpherePatchInternal(ref Vector3 center, ref Vector3 up, ref Vector3 axis, float radius,
+            float minTh, float maxTh, float minPs, float maxPs, ref Vector3 color, float stepDegrees)
+        {
+            DebugDraw.instance?.DrawSpherePatch(ref center, ref up, ref axis, radius, minTh, maxTh, minPs, maxPs, ref color, stepDegrees);
+        }
+
+        [MonoPInvokeCallback(typeof(DrawTriangleUnmanagedDelegate))]
+        public static void DrawTriangleInternal(ref Vector3 v0, ref Vector3 v1, ref Vector3 v2, ref Vector3 color, float alpha)
+        {
+            DebugDraw.instance?.DrawTriangle(ref v0, ref v1, ref v2, ref color, alpha);
+        }
+
+        [MonoPInvokeCallback(typeof(DrawTransformUnmanagedDelegate))]
+        public static void DrawTransformInternal(ref Matrix4x4 transform, float orthoLen)
+        {
+            DebugDraw.instance?.DrawTransform(ref transform, orthoLen);
+        }
+
+        [MonoPInvokeCallback(typeof(GetDebugModeUnmanagedDelegate))]
+        public static DebugDrawModes GetDebugModeUnmanagedInternal()
+        {
+            if (DebugDraw.instance == null)
+            {
+                return DebugDrawModes.All;
+            }
+
+            return DebugDraw.instance.GetDebugModeUnmanaged();
+        }
+
+        [MonoPInvokeCallback(typeof(SimpleCallback))]
+        public static void SimpleCallbackUnmanagedInternal(int x)
+        {
+            DebugDraw.instance?.SimpleCallbackUnmanaged(x);
         }
     }
 }
