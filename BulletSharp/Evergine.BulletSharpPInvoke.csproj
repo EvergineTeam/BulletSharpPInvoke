@@ -4,11 +4,27 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <Description>Provides a wrapper for the BulletSharp physics component</Description>
     <DisableStyleCop>true</DisableStyleCop>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
+  
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Common\Evergine.Common\Evergine.Common.csproj" />
-    <ProjectReference Include="..\..\Common\Evergine.Mathematics\Evergine.Mathematics.csproj" />
+    <Compile Remove="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Evergine.Common" Version="2022.9.28.3" />
+    <PackageReference Include="Evergine.Mathematics" Version="2022.9.28.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="demos\**" />
+    <Compile Remove="test\**" />
+    <EmbeddedResource Remove="demos\**" />
+    <EmbeddedResource Remove="test\**" />
+    <None Remove="demos\**" />
+    <None Remove="test\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
 </Project>
