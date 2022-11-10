@@ -6,18 +6,9 @@ IF (NOT CMAKE_BUILD_TYPE)
     SET(CMAKE_BUILD_TYPE "Release")
 ENDIF (NOT CMAKE_BUILD_TYPE)
 
-FIND_PATH(BULLET_INCLUDE_DIR NAMES btBulletCollisionCommon.h
-    PATHS
-    ${PROJECT_SOURCE_DIR}/../../bullet/src/
-    ${PROJECT_SOURCE_DIR}/../bullet/src/
-    ${PROJECT_SOURCE_DIR}/../../bullet3/src/
-    ${PROJECT_SOURCE_DIR}/../bullet3/src/
-    ENV CPATH
-    /usr/include
-    /usr/local/include
-    /opt/local/include
-    NO_DEFAULT_PATH
-)
+SET(BULLET_INCLUDE_DIR "../../bullet3/src/")
+
+
 IF (NOT BULLET_INCLUDE_DIR)
     MESSAGE(FATAL_ERROR "bullet3 source directory not found, please specify bullet3/src/ location in BULLET_INCLUDE_DIR")
 ENDIF()
@@ -38,6 +29,8 @@ INCLUDE_DIRECTORIES(${BULLET_PHYSICS_SOURCE_DIR}/Extras/Serialize/BulletWorldImp
 INCLUDE_DIRECTORIES(${BULLET_PHYSICS_SOURCE_DIR}/Extras/Serialize/BulletXmlWorldImporter/)
 
 IF(${CMAKE_GENERATOR} MATCHES "Unix Makefiles")
+    SET(BULLETC_LIB bulletc)
+ELSEIF(${CMAKE_GENERATOR} MATCHES "Ninja")
     SET(BULLETC_LIB bulletc)
 ELSE()
     SET(BULLETC_LIB libbulletc)
