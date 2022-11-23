@@ -1,6 +1,7 @@
 using System;
 using Evergine.Mathematics;
 using static BulletSharp.UnsafeNativeMethods;
+using static BulletSharp.EvergineUnsafeNativeMethods;
 
 namespace BulletSharp
 {
@@ -12,8 +13,11 @@ namespace BulletSharp
 		public RigidBodyConstructionInfo(float mass, MotionState motionState,
 			CollisionShape collisionShape)
 		{
-			IntPtr native = btRigidBody_btRigidBodyConstructionInfo_new(mass, motionState != null ? motionState.Native : IntPtr.Zero,
-				collisionShape != null ? collisionShape.Native : IntPtr.Zero);
+			var motionStatePtr = motionState != null ? motionState.Native : IntPtr.Zero;
+			var collisionShapePtr = collisionShape != null ? collisionShape.Native : IntPtr.Zero;
+
+			Matrix4x4 transform = Matrix4x4.Identity;
+            IntPtr native = btRigidBody_btRigidBodyConstructionInfo_new_fixCookie(mass, motionStatePtr, collisionShapePtr, ref transform);
 			InitializeUserOwned(native);
 
 			_collisionShape = collisionShape;

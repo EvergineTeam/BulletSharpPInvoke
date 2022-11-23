@@ -1,9 +1,13 @@
+
 #include <BulletCollision/CollisionDispatch/btCollisionConfiguration.h>
 #include <BulletCollision/CollisionDispatch/btCollisionWorld.h>
 #include <BulletCollision/CollisionShapes/btCollisionShape.h>
 #include <BulletCollision/CollisionShapes/btConvexShape.h>
+#include <BulletDynamics/Dynamics/btRigidBody.h>
+#include <BulletDynamics/Dynamics/btDynamicsWorld.h>
 #include <LinearMath/btIDebugDraw.h>
 #include <LinearMath/btSerializer.h>
+
 
 #include "conversion.h"
 #include "btEvergineContact_wrap.h"
@@ -656,4 +660,19 @@ int btCollisionWorld_SweepTestAll(btCollisionWorld* world, btConvexShape* castSh
 	*bufferData = data->size() ? &(*data)[0] : (void*)0;
 	return data->size();
 }
+#pragma endregion
+
+#pragma region Missing Cookies
+
+btRigidBody_btRigidBodyConstructionInfo* btRigidBody_btRigidBodyConstructionInfo_new_fixCookie(
+	btScalar mass, btMotionState* motionState, btCollisionShape* collisionShape, const btTransform* transform)
+{
+	return  ALIGNED_NEW(btRigidBody::btRigidBodyConstructionInfo)(mass, motionState, collisionShape);
+}
+
+int btDynamicsWorld_stepSimulation_fixCookie(btDynamicsWorld* obj, btScalar timeStep, int maxSubSteps, btScalar fixedTimeStep, int i1, int i2, int i3, int i4, int i5)
+{
+	return obj->stepSimulation(timeStep, maxSubSteps, fixedTimeStep);
+}
+
 #pragma endregion

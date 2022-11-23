@@ -63,5 +63,14 @@ namespace BulletSharp
 
         [DllImport(Native.Dll, CallingConvention = Native.Conv)]
         public static extern IntPtr btConvexHullShape_new4(IntPtr pointsPtr, int numPoints, int stride);
+
+
+        // Methods included because due to WASM cookies issues
+
+        [DllImport(Native.Dll, CallingConvention = Native.Conv)]
+        public static extern int btDynamicsWorld_stepSimulation_fixCookie(IntPtr obj, float timeStep, int maxSubSteps, float fixedTimeStep, int i1, int i2, int i3, int i4, int i5);
+
+        [DllImport(Native.Dll, CallingConvention = Native.Conv)]
+        public static extern IntPtr btRigidBody_btRigidBodyConstructionInfo_new_fixCookie(float mass, IntPtr motionState, IntPtr collisionShape, [In] ref Matrix4x4 transform);
     }
 }

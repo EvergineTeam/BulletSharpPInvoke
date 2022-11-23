@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 using System.Security;
 using Evergine.Mathematics;
 using static BulletSharp.UnsafeNativeMethods;
+using static BulletSharp.EvergineUnsafeNativeMethods;
 
 namespace BulletSharp
 {
@@ -237,8 +238,7 @@ namespace BulletSharp
 
 		public int StepSimulation(float timeStep, int maxSubSteps = 1, float fixedTimeStep = 1.0f / 60.0f)
 		{
-			return btDynamicsWorld_stepSimulation(Native, timeStep, maxSubSteps,
-				fixedTimeStep);
+			return btDynamicsWorld_stepSimulation_fixCookie(Native, timeStep, maxSubSteps, fixedTimeStep, 0, 0, 0, 0, 0);
 		}
 
 		public void SynchronizeMotionStates()

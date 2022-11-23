@@ -99,6 +99,9 @@ extern "C" {
 	EXPORT int   btCollisionWorld_SweepTest(btCollisionWorld* world, btConvexShape* castShape, btCollisionObject* castOwner, btTransform* rayFromWorld, btTransform* rayToWorld, int filterMask, void* buffer, void** bufferData);
 	EXPORT int   btCollisionWorld_SweepTestAll(btCollisionWorld* world, btConvexShape* castShape, btCollisionObject* castOwner, btTransform* rayFromWorld, btTransform* rayToWorld, int filterMask, void* buffer, void** bufferData);
 
+	// Add methods to match WASM cookies...
+	EXPORT btRigidBody_btRigidBodyConstructionInfo* btRigidBody_btRigidBodyConstructionInfo_new_fixCookie(btScalar mass, btMotionState* motionState, btCollisionShape* collisionShape, const btTransform* transform);
+	EXPORT int btDynamicsWorld_stepSimulation_fixCookie(btDynamicsWorld* obj, btScalar timeStep, int maxSubSteps, btScalar fixedTimeStep, int i1, int i2, int i3, int i4, int i5);
 	
 #ifdef __cplusplus
 }

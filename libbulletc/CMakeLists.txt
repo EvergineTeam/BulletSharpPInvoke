@@ -419,6 +419,8 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/hacdHACD_wrap.h
 )
 
+set(BUILD_SHARED_LIBS ON CACHE BOOL "" FORCE)
+
 TARGET_LINK_LIBRARIES(${BULLETC_LIB} BulletCollision BulletDynamics LinearMath BulletFileLoader BulletSoftBody BulletWorldImporter BulletXmlWorldImporter HACD)
 
-ADD_SUBDIRECTORY(test)
+# ADD_SUBDIRECTORY(test)
