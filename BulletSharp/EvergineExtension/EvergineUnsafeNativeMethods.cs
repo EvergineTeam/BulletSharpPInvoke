@@ -64,6 +64,34 @@ namespace BulletSharp
         [DllImport(Native.Dll, CallingConvention = Native.Conv)]
         public static extern IntPtr btConvexHullShape_new4(IntPtr pointsPtr, int numPoints, int stride);
 
+        // Evergine Debug Draw
+        
+        [DllImport(Native.Dll, CallingConvention = Native.Conv)]
+        public static extern IntPtr btEvergineDebugDrawWrapper_new(IntPtr debugDrawGCHandle);
+
+        [DllImport(Native.Dll, CallingConvention = Native.Conv)]
+        public static extern IntPtr btEvergineDebugDrawWrapper_getGCHandle(IntPtr obj);
+
+        [DllImport(Native.Dll, CallingConvention = Native.Conv)]
+        public static extern void btEvergineDebugDrawWrapper_reset(IntPtr obj);
+
+        [DllImport(Native.Dll, CallingConvention = Native.Conv)]
+        public static extern void btEvergineDebugDrawWrapper_getDrawInformation(IntPtr obj, out int commandCount, out IntPtr buffer);
+
+        [DllImport(Native.Dll, CallingConvention = Native.Conv)]
+
+        public static extern int btEvergineDebugDrawWrapper_getDebugMode(IntPtr obj);
+
+        [DllImport(Native.Dll, CallingConvention = Native.Conv)]
+
+        public static extern void btEvergineDebugDrawWrapper_setDebugMode(IntPtr obj, int debugMode);
+
+        [DllImport(Native.Dll, CallingConvention = Native.Conv)]
+        public static extern void btEvergineDebugDrawWrapper_setDefaultColors(IntPtr obj, IntPtr defaultColors);
+
+
+        [DllImport(Native.Dll, CallingConvention = Native.Conv)]
+        public static extern void btEvergineDebugDrawWrapper_delete(IntPtr obj);
 
         // Methods included because due to WASM cookies issues
 
@@ -72,5 +100,9 @@ namespace BulletSharp
 
         [DllImport(Native.Dll, CallingConvention = Native.Conv)]
         public static extern IntPtr btRigidBody_btRigidBodyConstructionInfo_new_fixCookie(float mass, IntPtr motionState, IntPtr collisionShape, [In] ref Matrix4x4 transform);
+
+        [DllImport(Native.Dll, CallingConvention = Native.Conv)]
+        public static extern void btCollisionWorld_convexSweepTest_fixCookie(IntPtr obj, IntPtr castShape, [In] ref Matrix4x4 from, float allowedCcdPenetration, [In] ref Matrix4x4 to, IntPtr resultCallback);
+
     }
 }

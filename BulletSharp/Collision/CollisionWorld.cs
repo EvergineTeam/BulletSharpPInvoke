@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Security;
 using Evergine.Mathematics;
 using static BulletSharp.UnsafeNativeMethods;
+using static BulletSharp.EvergineUnsafeNativeMethods;
 
 namespace BulletSharp
 {
@@ -469,7 +470,7 @@ namespace BulletSharp
 
 	public partial class CollisionWorld : BulletDisposableObject
 	{
-		private DebugDraw _debugDrawer;
+		private EvergineDebugDraw _debugDrawer;
 		private BroadphaseInterface _broadphase;
 		private DispatcherInfo _dispatchInfo;
 
@@ -530,14 +531,13 @@ namespace BulletSharp
 		public void ConvexSweepTestRef(ConvexShape castShape, ref Matrix4x4 from, ref Matrix4x4 to,
 			ConvexResultCallback resultCallback, float allowedCcdPenetration = 0)
 		{
-			btCollisionWorld_convexSweepTest(Native, castShape.Native, ref from, ref to, resultCallback.Native, allowedCcdPenetration);
-		}
+            btCollisionWorld_convexSweepTest_fixCookie(Native, castShape.Native, ref from, allowedCcdPenetration, ref to, resultCallback.Native);
+        }
 
 		public void ConvexSweepTest(ConvexShape castShape, Matrix4x4 from, Matrix4x4 to,
 			ConvexResultCallback resultCallback, float allowedCcdPenetration = 0)
 		{
-			btCollisionWorld_convexSweepTest(Native, castShape.Native, ref from,
-				ref to, resultCallback.Native, allowedCcdPenetration);
+			btCollisionWorld_convexSweepTest_fixCookie(Native, castShape.Native, ref from, allowedCcdPenetration, ref to, resultCallback.Native);
 		}
 
 		public void DebugDrawObjectRef(ref Matrix4x4 worldTransform, CollisionShape shape, ref Vector3 color)
@@ -699,7 +699,7 @@ namespace BulletSharp
 
 		public AlignedCollisionObjectArray CollisionObjectArray { get; protected set; }
 
-		public DebugDraw DebugDrawer
+		public EvergineDebugDraw DebugDrawer
 		{
 			get => _debugDrawer;
 			set

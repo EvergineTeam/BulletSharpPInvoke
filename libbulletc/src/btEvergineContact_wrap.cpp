@@ -7,7 +7,7 @@
 #include <BulletDynamics/Dynamics/btDynamicsWorld.h>
 #include <LinearMath/btIDebugDraw.h>
 #include <LinearMath/btSerializer.h>
-
+#include "btIDebugDraw_wrap.h"
 
 #include "conversion.h"
 #include "btEvergineContact_wrap.h"
@@ -155,7 +155,7 @@ int btCollisionWorld_ContactTest(btCollisionWorld* world, btCollisionObject* col
 
 int btCollisionWorld_ContactPairTest(btCollisionWorld* world, btCollisionObject* bodyA, btCollisionObject* bodyB, int shapeIndexA, int shapeIndexB, void* buffer, void** bufferData)
 {
-	if (buffer) 
+	if (buffer)
 	{
 		std::vector<ContactData>* data = (std::vector<ContactData>*)buffer;
 		data->clear();
@@ -241,10 +241,10 @@ void btCollisionWorld_GetManifoldContact(btCollisionWorld* world, int manifoldId
 int btCollisionWorld_GetManifoldContacts(btCollisionWorld* world, int manifoldId, void* bufferPtr, int contactBufferSize)
 {
 	ContactData* contactBuffer = (ContactData*)bufferPtr;
-	btDispatcher* dispatcher = world->getDispatcher();	
+	btDispatcher* dispatcher = world->getDispatcher();
 	btPersistentManifold* manifold = dispatcher->getManifoldByIndexInternal(manifoldId);
 	int numContacts = manifold->getNumContacts();
-	
+
 	if (numContacts > 0)
 	{
 		if (numContacts > contactBufferSize) numContacts = contactBufferSize;
@@ -314,7 +314,7 @@ struct RayResultData
 
 struct	ClosestRayTestCallback : public btCollisionWorld::RayResultCallback
 {
-	ClosestRayTestCallback(const btVector3&	rayFromWorld, const btVector3&	rayToWorld)
+	ClosestRayTestCallback(const btVector3& rayFromWorld, const btVector3& rayToWorld)
 		:m_rayFromWorld(rayFromWorld),
 		m_rayToWorld(rayToWorld),
 		m_shapePart(0),
@@ -343,7 +343,7 @@ struct	ClosestRayTestCallback : public btCollisionWorld::RayResultCallback
 			m_triangleIndex = 0;
 			m_shapePart = 0;
 		}
-		
+
 		m_collisionObject = rayResult.m_collisionObject;
 		if (normalInWorldSpace)
 		{
@@ -352,7 +352,7 @@ struct	ClosestRayTestCallback : public btCollisionWorld::RayResultCallback
 		else
 		{
 			///need to transform normal into worldspace
-			m_hitNormalWorld = m_collisionObject->getWorldTransform().getBasis()*rayResult.m_hitNormalLocal;
+			m_hitNormalWorld = m_collisionObject->getWorldTransform().getBasis() * rayResult.m_hitNormalLocal;
 		}
 
 		m_hitPointWorld.setInterpolate3(m_rayFromWorld, m_rayToWorld, rayResult.m_hitFraction);
@@ -362,7 +362,7 @@ struct	ClosestRayTestCallback : public btCollisionWorld::RayResultCallback
 
 struct	RaycastCallback : public btCollisionWorld::RayResultCallback
 {
-	RaycastCallback(std::vector<RayResultData>* buffer, const btVector3& rayFromWorld, const btVector3&	rayToWorld)
+	RaycastCallback(std::vector<RayResultData>* buffer, const btVector3& rayFromWorld, const btVector3& rayToWorld)
 		: m_data(buffer),
 		m_rayFromWorld(rayFromWorld),
 		m_rayToWorld(rayToWorld)
@@ -396,7 +396,7 @@ struct	RaycastCallback : public btCollisionWorld::RayResultCallback
 		else
 		{
 			///need to transform normal into worldspace
-			normal = rayResult.m_collisionObject->getWorldTransform().getBasis()*rayResult.m_hitNormalLocal;
+			normal = rayResult.m_collisionObject->getWorldTransform().getBasis() * rayResult.m_hitNormalLocal;
 		}
 
 		point.setInterpolate3(m_rayFromWorld, m_rayToWorld, rayResult.m_hitFraction);
@@ -426,7 +426,7 @@ int btCollisionWorld_RayTest(btCollisionWorld* world, btVector3* rayFromWorld, b
 	cb.m_collisionFilterGroup = btBroadphaseProxy::AllFilter;
 	cb.m_collisionFilterMask = filterMask;
 
-	world->rayTest(BTVECTOR3_USE(rayFromWorld), BTVECTOR3_USE(rayToWorld), cb);	
+	world->rayTest(BTVECTOR3_USE(rayFromWorld), BTVECTOR3_USE(rayToWorld), cb);
 
 	bool success = cb.hasHit();
 
@@ -443,7 +443,7 @@ int btCollisionWorld_RayTest(btCollisionWorld* world, btVector3* rayFromWorld, b
 		}
 
 		result.HitFraction = cb.m_closestHitFraction;
-		
+
 		result.PointX = cb.m_hitPointWorld.getX();
 		result.PointY = cb.m_hitPointWorld.getY();
 		result.PointZ = cb.m_hitPointWorld.getZ();
@@ -506,7 +506,7 @@ struct	ClosestConvexTestCallback : public btCollisionWorld::ConvexResultCallback
 
 	btVector3	m_hitNormalWorld;
 	btVector3	m_hitPointWorld;
-	const btCollisionObject*	m_hitCollisionObject;
+	const btCollisionObject* m_hitCollisionObject;
 	const btCollisionObject* m_castOwner;
 
 	int m_shapePart;
@@ -538,7 +538,7 @@ struct	ClosestConvexTestCallback : public btCollisionWorld::ConvexResultCallback
 		else
 		{
 			///need to transform normal into worldspace
-			m_hitNormalWorld = m_hitCollisionObject->getWorldTransform().getBasis()*rayResult.m_hitNormalLocal;
+			m_hitNormalWorld = m_hitCollisionObject->getWorldTransform().getBasis() * rayResult.m_hitNormalLocal;
 		}
 
 		m_hitPointWorld = rayResult.m_hitPointLocal;
@@ -565,12 +565,12 @@ struct	SweepTestCallback : public btCollisionWorld::ConvexResultCallback
 
 		RayResultData result;
 
-		if (convexResult.m_localShapeInfo) 
+		if (convexResult.m_localShapeInfo)
 		{
 			result.TriangleIndex = convexResult.m_localShapeInfo->m_triangleIndex;
 			result.ShapePart = convexResult.m_localShapeInfo->m_shapePart;
 		}
-		else 
+		else
 		{
 			result.TriangleIndex = 0;
 			result.ShapePart = 0;
@@ -587,7 +587,7 @@ struct	SweepTestCallback : public btCollisionWorld::ConvexResultCallback
 		else
 		{
 			///need to transform normal into worldspace
-			normal = convexResult.m_hitCollisionObject->getWorldTransform().getBasis()*convexResult.m_hitNormalLocal;
+			normal = convexResult.m_hitCollisionObject->getWorldTransform().getBasis() * convexResult.m_hitNormalLocal;
 		}
 
 		result.NormalX = normal.getX();
@@ -609,8 +609,8 @@ private:
 int btCollisionWorld_SweepTest(btCollisionWorld* world, btConvexShape* castShape, btCollisionObject* castOwner, btTransform* rayFromWorld, btTransform* rayToWorld, int filterMask, void* buffer, void** bufferData)
 {
 	BTTRANSFORM_IN(rayFromWorld);
-	BTTRANSFORM_IN(rayToWorld);	
-	
+	BTTRANSFORM_IN(rayToWorld);
+
 	ClosestConvexTestCallback cb(castOwner);
 	cb.m_collisionFilterGroup = btBroadphaseProxy::AllFilter;
 	cb.m_collisionFilterMask = filterMask;
@@ -654,12 +654,554 @@ int btCollisionWorld_SweepTestAll(btCollisionWorld* world, btConvexShape* castSh
 	SweepTestCallback cb(castOwner, data);
 	cb.m_collisionFilterGroup = btBroadphaseProxy::DefaultFilter;
 	cb.m_collisionFilterMask = filterMask;
-	
+
 	world->convexSweepTest(castShape, BTTRANSFORM_USE(rayFromWorld), BTTRANSFORM_USE(rayToWorld), cb);
 
 	*bufferData = data->size() ? &(*data)[0] : (void*)0;
 	return data->size();
 }
+#pragma endregion
+
+#pragma region Debug Draw
+
+enum DrawCommandType {
+	DrawAABB = 0,
+	DrawArc,
+	DrawBox,
+	DrawCapsule,
+	DrawCone,
+	DrawContactPoint,
+	DrawCylinder,
+	DrawLine,
+	DrawPlane,
+	DrawSphere,
+	DrawSpherePatch,
+	DrawTransform,
+	DrawTriangle
+};
+
+struct unalignedVector3 {
+	float x;
+	float y;
+	float z;
+};
+
+struct unalignedTransform {
+	float m[16];
+};
+
+struct command_DrawAAbb {
+	unalignedVector3 from;
+	unalignedVector3 to;
+	unalignedVector3 color;
+};
+
+struct command_DrawArc {
+	unalignedVector3 center;
+	unalignedVector3 normal;
+	unalignedVector3 axis;
+	float radiusA;
+	float radiusB;
+	float minAngle;
+	float maxAngle;
+	unalignedVector3 color;
+	bool drawSect;
+	float stepDegrees;
+};
+
+struct command_DrawBox {
+	unalignedVector3 bbMin;
+	unalignedVector3 bbMax;
+	unalignedTransform trans;
+	unalignedVector3 color;
+};
+
+struct command_DrawCapsule {
+	float radius;
+	float halfHeight;
+	int upAxis;
+	unalignedTransform trans;
+	unalignedVector3 color;
+};
+
+struct command_DrawCone {
+	float radius;
+	float height;
+	int upAxis;
+	unalignedTransform trans;
+	unalignedVector3 color;
+};
+
+struct command_DrawContactPoint {
+	unalignedVector3 PointOnB;
+	unalignedVector3 normalOnB;
+	float distance;
+	int lifeTime;
+	unalignedVector3 color;
+};
+
+struct command_DrawCylinder {
+	float radius;
+	float halfHeight;
+	int upAxis;
+	unalignedTransform trans;
+	unalignedVector3 color;
+};
+
+struct command_DrawLine {
+	unalignedVector3 from;
+	unalignedVector3 to;
+	unalignedVector3 color;
+};
+
+struct command_DrawPlane {
+	unalignedVector3 planeNormal;
+	float planeConst;
+	unalignedTransform trans;
+	unalignedVector3 color;
+};
+
+struct command_DrawSphere {
+	float radius;
+	unalignedTransform trans;
+	unalignedVector3 color;
+};
+
+struct command_DrawSpherePatch {
+	unalignedVector3 center;
+	unalignedVector3 up;
+	unalignedVector3 axis;
+	float radius;
+	float minTh;
+	float maxTh;
+	float minPs;
+	float maxPs;
+	unalignedVector3 color;
+	float stepDegrees;
+};
+
+struct command_DrawTransform {
+	unalignedTransform trans;
+	float orthoLen;
+};
+
+struct command_DrawTriangle {
+	unalignedVector3 v0;
+	unalignedVector3 v1;
+	unalignedVector3 v2;
+	unalignedVector3 color;
+	float alpha;
+};
+
+#define ASSIGN_VECTOR3_UNALIGNED(v) *(unalignedVector3*)&BTVECTOR3_USE(v)
+#define ASSIGN_TRANSFORM_UNALIGNED(v) *(unalignedTransform*)&BTTRANSFORM_USE_REF(v)
+
+#define ADD_TO_DRAWBUFFER(ptr, cmdType, commandType, command) \
+	ensureCapacity(&ptr, sizeof(cmdType) + 4); \
+	\
+	*(int*)ptr = (int)commandType; \
+	ptr = static_cast<int*>(ptr) + 1; \
+	\
+	*(cmdType*)ptr = command; \
+	ptr = static_cast<cmdType*>(ptr) + 1; \
+	this->drawCommandCount++;
+
+int NextPowerOfTwo(int v)
+{
+	v--;
+	v |= v >> 1;
+	v |= v >> 2;
+	v |= v >> 4;
+	v |= v >> 8;
+	v |= v >> 16;
+	v++;
+
+	return v;
+}
+
+void btEvergineDebugDrawWrapper::ensureCapacity(void** ptr, int size)
+{
+	int newUsage = this->currentUsage + size;
+
+	if (!this->buffer || newUsage > this->bufferCapacity)
+	{
+		int nextCapacity = NextPowerOfTwo(newUsage);
+		void* nextBuffer = malloc(nextCapacity);
+
+		if (this->buffer) 
+		{
+			// Copy the old buffer to the new buffer...
+			memcpy(nextBuffer, this->buffer, this->bufferCapacity);
+			delete(this->buffer);
+		}
+
+		this->buffer = nextBuffer;
+		this->bufferCapacity = nextCapacity;
+		*ptr = (void*)((size_t)this->buffer + this->currentUsage);
+	}
+
+	this->currentUsage = newUsage;
+}
+
+btEvergineDebugDrawWrapper::btEvergineDebugDrawWrapper(void* debugDrawGCHandle)
+{
+	this->_debugDrawGCHandle = debugDrawGCHandle;
+	this->drawCommandCount = 0;
+	this->bufferCapacity = 1024; // 1k by default...
+	this->buffer = malloc(this->bufferCapacity);
+}
+
+btEvergineDebugDrawWrapper::~btEvergineDebugDrawWrapper()
+{
+	free(this->buffer);
+	this->buffer = 0;
+}
+
+void btEvergineDebugDrawWrapper::reset() 
+{
+	this->currentPointer = this->buffer;
+	this->drawCommandCount = 0;
+	this->currentUsage = 0;
+}
+
+void btEvergineDebugDrawWrapper::getDrawInformation(int* commandCount, void** buffer) 
+{
+	*commandCount = this->drawCommandCount;
+	*buffer = this->buffer;
+}
+
+void  btEvergineDebugDrawWrapper::draw3dText(const btVector3& location, const char* textString)
+{
+}
+
+void  btEvergineDebugDrawWrapper::drawAabb(const btVector3& from, const btVector3& to, const btVector3& color)
+{
+	BTVECTOR3_IN(from);
+	BTVECTOR3_IN(to);	
+	BTVECTOR3_IN(color);
+
+	command_DrawAAbb drawAabbCmd;
+
+	drawAabbCmd.from = ASSIGN_VECTOR3_UNALIGNED(from);
+	drawAabbCmd.to = ASSIGN_VECTOR3_UNALIGNED(to);
+	drawAabbCmd.color = ASSIGN_VECTOR3_UNALIGNED(color);
+
+	ADD_TO_DRAWBUFFER(this->currentPointer, command_DrawAAbb, DrawAABB, drawAabbCmd);
+
+}
+
+void  btEvergineDebugDrawWrapper::drawArc(const btVector3& center, const btVector3& normal,
+	const btVector3& axis, btScalar radiusA, btScalar radiusB, btScalar minAngle, btScalar maxAngle,
+	const btVector3& color, bool drawSect, btScalar stepDegrees)
+{
+	BTVECTOR3_IN(center);
+	BTVECTOR3_IN(normal);
+	BTVECTOR3_IN(axis);
+	BTVECTOR3_IN(color);
+
+	command_DrawArc drawCmd;
+
+	drawCmd.center = ASSIGN_VECTOR3_UNALIGNED(center);
+	drawCmd.normal = ASSIGN_VECTOR3_UNALIGNED(normal);
+	drawCmd.axis = ASSIGN_VECTOR3_UNALIGNED(axis);
+	drawCmd.radiusA = radiusA;
+	drawCmd.radiusB = radiusB;
+	drawCmd.minAngle = minAngle;
+	drawCmd.maxAngle = maxAngle;
+	drawCmd.color = ASSIGN_VECTOR3_UNALIGNED(color);
+	drawCmd.drawSect = drawSect;
+	drawCmd.stepDegrees = stepDegrees;
+
+	ADD_TO_DRAWBUFFER(this->currentPointer, command_DrawArc, DrawArc, drawCmd)
+}
+
+void  btEvergineDebugDrawWrapper::drawArc(const btVector3& center, const btVector3& normal, const btVector3& axis,
+	btScalar radiusA, btScalar radiusB, btScalar minAngle, btScalar maxAngle,
+	const btVector3& color, bool drawSect)
+{
+}
+
+void  btEvergineDebugDrawWrapper::drawBox(const btVector3& bbMin, const btVector3& bbMax,
+	const btVector3& color)
+{
+}
+
+void  btEvergineDebugDrawWrapper::drawBox(const btVector3& bbMin, const btVector3& bbMax,
+	const btTransform& trans, const btVector3& color)
+{
+	BTVECTOR3_IN(bbMin);
+	BTVECTOR3_IN(bbMax);
+	BTTRANSFORM_IN_REF(trans);
+	BTVECTOR3_IN(color);
+
+	command_DrawBox drawBoxCmd;
+
+	drawBoxCmd.bbMin = ASSIGN_VECTOR3_UNALIGNED(bbMin);
+	drawBoxCmd.bbMax = ASSIGN_VECTOR3_UNALIGNED(bbMax);
+	drawBoxCmd.trans = ASSIGN_TRANSFORM_UNALIGNED(trans);
+	drawBoxCmd.color = ASSIGN_VECTOR3_UNALIGNED(color);
+
+	ADD_TO_DRAWBUFFER(this->currentPointer, command_DrawBox, DrawBox, drawBoxCmd)
+}
+
+void  btEvergineDebugDrawWrapper::drawCapsule(btScalar radius, btScalar halfHeight, int upAxis,
+	const btTransform& transform, const btVector3& color)
+{
+	BTTRANSFORM_IN_REF(transform);
+	BTVECTOR3_IN(color);
+
+	command_DrawCapsule drawCmd;
+
+	drawCmd.radius = radius;
+	drawCmd.halfHeight = halfHeight;
+	drawCmd.upAxis = upAxis;
+	drawCmd.trans = ASSIGN_TRANSFORM_UNALIGNED(transform);
+	drawCmd.color = ASSIGN_VECTOR3_UNALIGNED(color);
+
+	ADD_TO_DRAWBUFFER(this->currentPointer, command_DrawCapsule, DrawCapsule, drawCmd)
+}
+
+void  btEvergineDebugDrawWrapper::drawCone(btScalar radius, btScalar height, int upAxis,
+	const btTransform& transform, const btVector3& color)
+{
+	BTTRANSFORM_IN_REF(transform);
+	BTVECTOR3_IN(color);
+
+	command_DrawCone drawCmd;
+
+	drawCmd.radius = radius;
+	drawCmd.height = height;
+	drawCmd.upAxis = upAxis;
+	drawCmd.trans = ASSIGN_TRANSFORM_UNALIGNED(transform);
+	drawCmd.color = ASSIGN_VECTOR3_UNALIGNED(color);
+
+	ADD_TO_DRAWBUFFER(this->currentPointer, command_DrawCone, DrawCone, drawCmd)
+}
+
+void  btEvergineDebugDrawWrapper::drawContactPoint(const btVector3& PointOnB, const btVector3& normalOnB,
+	btScalar distance, int lifeTime, const btVector3& color)
+{
+	BTVECTOR3_IN(PointOnB);
+	BTVECTOR3_IN(normalOnB);
+	BTVECTOR3_IN(color);
+
+	command_DrawContactPoint drawCmd;
+
+	drawCmd.PointOnB = ASSIGN_VECTOR3_UNALIGNED(PointOnB);
+	drawCmd.normalOnB = ASSIGN_VECTOR3_UNALIGNED(normalOnB);
+	drawCmd.distance = distance;
+	drawCmd.lifeTime = lifeTime;
+	drawCmd.color = ASSIGN_VECTOR3_UNALIGNED(color);
+
+	ADD_TO_DRAWBUFFER(this->currentPointer, command_DrawContactPoint, DrawContactPoint, drawCmd);
+}
+
+void  btEvergineDebugDrawWrapper::drawCylinder(btScalar radius, btScalar halfHeight, int upAxis,
+	const btTransform& transform, const btVector3& color)
+{
+	BTTRANSFORM_IN_REF(transform);
+	BTVECTOR3_IN(color);
+
+	command_DrawCylinder drawCmd;
+
+	drawCmd.radius = radius;
+	drawCmd.halfHeight = halfHeight;
+	drawCmd.upAxis = upAxis;
+	drawCmd.trans = ASSIGN_TRANSFORM_UNALIGNED(transform);
+	drawCmd.color = ASSIGN_VECTOR3_UNALIGNED(color);
+
+	ADD_TO_DRAWBUFFER(this->currentPointer, command_DrawCylinder, DrawCylinder, drawCmd)
+}
+
+void  btEvergineDebugDrawWrapper::drawLine(const btVector3& from, const btVector3& to, const btVector3& color)
+{
+	BTVECTOR3_IN(from);
+	BTVECTOR3_IN(to);
+	BTVECTOR3_IN(color);
+
+	command_DrawLine drawCmd;
+
+	drawCmd.from = ASSIGN_VECTOR3_UNALIGNED(from);
+	drawCmd.to = ASSIGN_VECTOR3_UNALIGNED(to);
+	drawCmd.color = ASSIGN_VECTOR3_UNALIGNED(color);
+
+	ADD_TO_DRAWBUFFER(this->currentPointer, command_DrawLine, DrawLine, drawCmd);
+}
+
+void  btEvergineDebugDrawWrapper::drawPlane(const btVector3& planeNormal, btScalar planeConst,
+	const btTransform& transform, const btVector3& color)
+{
+	BTVECTOR3_IN(planeNormal);
+	BTTRANSFORM_IN_REF(transform);
+	BTVECTOR3_IN(color);
+
+	command_DrawPlane drawBoxCmd;
+
+	drawBoxCmd.planeNormal = ASSIGN_VECTOR3_UNALIGNED(planeNormal);
+	drawBoxCmd.planeConst = planeConst;
+	drawBoxCmd.trans = ASSIGN_TRANSFORM_UNALIGNED(transform);
+	drawBoxCmd.color = ASSIGN_VECTOR3_UNALIGNED(color);
+
+	ADD_TO_DRAWBUFFER(this->currentPointer, command_DrawPlane, DrawPlane, drawBoxCmd)
+}
+
+void  btEvergineDebugDrawWrapper::drawSphere(const btVector3& p, btScalar radius, const btVector3& color)
+{
+}
+
+void  btEvergineDebugDrawWrapper::drawSphere(btScalar radius, const btTransform& trans,
+	const btVector3& color)
+{
+	BTTRANSFORM_IN_REF(trans);
+	BTVECTOR3_IN(color);
+
+	command_DrawSphere drawSphereCmd;
+	drawSphereCmd.radius = radius;
+	drawSphereCmd.trans = ASSIGN_TRANSFORM_UNALIGNED(trans);
+	drawSphereCmd.color = ASSIGN_VECTOR3_UNALIGNED(color);
+
+	ADD_TO_DRAWBUFFER(this->currentPointer, command_DrawSphere, DrawSphere, drawSphereCmd);
+}
+
+void  btEvergineDebugDrawWrapper::drawSpherePatch(const btVector3& center, const btVector3& up,
+	const btVector3& axis, btScalar radius, btScalar minTh, btScalar maxTh, btScalar minPs,
+	btScalar maxPs, const btVector3& color, btScalar stepDegrees)
+{
+	BTVECTOR3_IN(center);
+	BTVECTOR3_IN(up);
+	BTVECTOR3_IN(axis);
+	BTVECTOR3_IN(color);
+
+	command_DrawSpherePatch drawCmd;
+
+	drawCmd.center = ASSIGN_VECTOR3_UNALIGNED(center);
+	drawCmd.up = ASSIGN_VECTOR3_UNALIGNED(up);
+	drawCmd.axis = ASSIGN_VECTOR3_UNALIGNED(axis);
+	drawCmd.radius = radius;
+	drawCmd.minTh = minTh;
+	drawCmd.maxTh = maxTh;
+	drawCmd.maxPs = maxPs;
+	drawCmd.color = ASSIGN_VECTOR3_UNALIGNED(color);
+	drawCmd.stepDegrees = stepDegrees;
+
+	ADD_TO_DRAWBUFFER(this->currentPointer, command_DrawSpherePatch, DrawSpherePatch, drawCmd);
+}
+
+void  btEvergineDebugDrawWrapper::drawSpherePatch(const btVector3& center, const btVector3& up, const btVector3& axis, btScalar radius,
+	btScalar minTh, btScalar maxTh, btScalar minPs, btScalar maxPs, const btVector3& color)
+{
+}
+
+void  btEvergineDebugDrawWrapper::drawTransform(const btTransform& transform, btScalar orthoLen)
+{
+	BTTRANSFORM_IN_REF(transform);
+
+	int sizeCmd = sizeof(command_DrawTransform);
+
+	command_DrawTransform drawCmd;
+	drawCmd.trans = ASSIGN_TRANSFORM_UNALIGNED(transform);
+	drawCmd.orthoLen = orthoLen;
+
+	ADD_TO_DRAWBUFFER(this->currentPointer, command_DrawTransform, DrawTransform, drawCmd);
+}
+
+void  btEvergineDebugDrawWrapper::drawTriangle(const btVector3& v0, const btVector3& v1,
+	const btVector3& v2, const btVector3& color, btScalar __unnamed4)
+{
+	BTVECTOR3_IN(v0);
+	BTVECTOR3_IN(v1);
+	BTVECTOR3_IN(v2);
+	BTVECTOR3_IN(color);
+
+	command_DrawTriangle drawCmd;
+
+	drawCmd.v0 = ASSIGN_VECTOR3_UNALIGNED(v0);
+	drawCmd.v1 = ASSIGN_VECTOR3_UNALIGNED(v1);
+	drawCmd.v2 = ASSIGN_VECTOR3_UNALIGNED(v2);
+	drawCmd.color = ASSIGN_VECTOR3_UNALIGNED(color);
+
+	ADD_TO_DRAWBUFFER(this->currentPointer, command_DrawTriangle, DrawTriangle, drawCmd);
+
+}
+
+void  btEvergineDebugDrawWrapper::drawTriangle(const btVector3& v0, const btVector3& v1,
+	const btVector3& v2, const btVector3& __unnamed3, const btVector3& __unnamed4,
+	const btVector3& __unnamed5, const btVector3& color, btScalar alpha)
+{
+}
+
+void  btEvergineDebugDrawWrapper::baseDrawAabb(const btVector3& from, const btVector3& to, const btVector3& color)
+{
+	btIDebugDraw::drawAabb(from, to, color);
+}
+
+void  btEvergineDebugDrawWrapper::baseDrawCone(btScalar radius, btScalar height, int upAxis, const btTransform& transform, const btVector3& color)
+{
+	btIDebugDraw::drawCone(radius, height, upAxis, transform, color);
+}
+
+void  btEvergineDebugDrawWrapper::baseDrawCylinder(btScalar radius, btScalar halfHeight, int upAxis, const btTransform& transform, const btVector3& color)
+{
+	btIDebugDraw::drawCylinder(radius, halfHeight, upAxis, transform, color);
+}
+
+void  btEvergineDebugDrawWrapper::baseDrawSphere(const btVector3& p, btScalar radius, const btVector3& color)
+{
+	btIDebugDraw::drawSphere(p, radius, color);
+}
+
+void  btEvergineDebugDrawWrapper::baseDrawTriangle(const btVector3& v0, const btVector3& v1, const btVector3& v2, const btVector3& color, btScalar)
+{
+	btIDebugDraw::drawTriangle(v0, v1, v2, color, 0);
+}
+
+void  btEvergineDebugDrawWrapper::baseDrawTriangle(const btVector3& v0, const btVector3& v1, const btVector3& v2,
+	const btVector3& n0, const btVector3& n1, const btVector3& n2, const btVector3& color, btScalar alpha)
+{
+	btIDebugDraw::drawTriangle(v0, v1, v2, n0, n1, n2, color, alpha);
+}
+
+int  btEvergineDebugDrawWrapper::getDebugMode() const
+{
+	return this->debugDrawModes;
+}
+
+void  btEvergineDebugDrawWrapper::reportErrorWarning(const char* warningString)
+{
+	//_debugDraw->ReportErrorWarning(StringConv::UnmanagedToManaged(warningString));
+}
+
+void  btEvergineDebugDrawWrapper::setDebugMode(int debugMode)
+{
+	this->debugDrawModes = (DebugDrawModes)debugMode;
+}
+
+btEvergineDebugDrawWrapper* btEvergineDebugDrawWrapper_new(void* debugDrawGCHandle)
+{
+	return new btEvergineDebugDrawWrapper(debugDrawGCHandle);
+}
+
+void* btEvergineDebugDrawWrapper_getGCHandle(btEvergineDebugDrawWrapper* obj)
+{
+	return obj->_debugDrawGCHandle;
+}
+
+void btEvergineDebugDrawWrapper_reset(btEvergineDebugDrawWrapper* obj)
+{
+	obj->reset();
+}
+
+void btEvergineDebugDrawWrapper_getDrawInformation(btEvergineDebugDrawWrapper* obj, int* commandCount, void** buffer)
+{
+	obj->getDrawInformation(commandCount, buffer);
+}
+
+void btEvergineDebugDrawWrapper_delete(btEvergineDebugDrawWrapper* obj)
+{
+	delete obj;
+}
+
+
 #pragma endregion
 
 #pragma region Missing Cookies
@@ -673,6 +1215,29 @@ btRigidBody_btRigidBodyConstructionInfo* btRigidBody_btRigidBodyConstructionInfo
 int btDynamicsWorld_stepSimulation_fixCookie(btDynamicsWorld* obj, btScalar timeStep, int maxSubSteps, btScalar fixedTimeStep, int i1, int i2, int i3, int i4, int i5)
 {
 	return obj->stepSimulation(timeStep, maxSubSteps, fixedTimeStep);
+}
+
+void btCollisionWorld_convexSweepTest_fixCookie(btCollisionWorld* obj, const btConvexShape* castShape, const btTransform* from, btScalar allowedCcdPenetration, const btTransform* to, btCollisionWorld_ConvexResultCallback* resultCallback)
+{
+	BTTRANSFORM_IN(from);
+	BTTRANSFORM_IN(to);
+	obj->convexSweepTest(castShape, BTTRANSFORM_USE(from), BTTRANSFORM_USE(to), *resultCallback,
+		allowedCcdPenetration);
+}
+
+int btEvergineDebugDrawWrapper_getDebugMode(btEvergineDebugDrawWrapper* obj)
+{
+	return obj->getDebugMode();
+}
+
+void btEvergineDebugDrawWrapper_setDebugMode(btEvergineDebugDrawWrapper* obj, int debugMode)
+{
+	obj->setDebugMode(debugMode);
+}
+
+void btEvergineDebugDrawWrapper_setDefaultColors(btEvergineDebugDrawWrapper* obj, void* defaultColors)
+{
+	obj->setDefaultColors(*(btIDebugDraw::DefaultColors*)defaultColors);
 }
 
 #pragma endregion
