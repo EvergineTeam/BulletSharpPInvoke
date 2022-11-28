@@ -832,7 +832,7 @@ void btEvergineDebugDrawWrapper::ensureCapacity(void** ptr, int size)
 		{
 			// Copy the old buffer to the new buffer...
 			memcpy(nextBuffer, this->buffer, this->bufferCapacity);
-			delete(this->buffer);
+			free(this->buffer);
 		}
 
 		this->buffer = nextBuffer;
