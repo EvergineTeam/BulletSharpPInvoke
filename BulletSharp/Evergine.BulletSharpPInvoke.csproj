@@ -2,7 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Description>Provides a wrapper for the BulletSharp physics component</Description>
+    <Description>Provides a wrapper C# wrapper for Evergine of Bullet physic engine using PInvoke. </Description>
+    <PackageTags>Evergine;C#;Game Engine;DirectX;OpenGL;OpenGLES;Vulkan;Metal;2D;3D;AR;VR;MixedReality;Mobile;HoloLens</PackageTags>
     <DisableStyleCop>true</DisableStyleCop>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
@@ -12,8 +13,7 @@
     <Compile Remove="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Evergine.Common" Version="2022.9.28.3" />
-    <PackageReference Include="Evergine.Mathematics" Version="2022.9.28.3" />
+    <PackageReference Include="Evergine.Mathematics" Version="*" />
   </ItemGroup>
 
   <ItemGroup>

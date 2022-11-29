@@ -4,14 +4,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Security;
-using Evergine.Common.Attributes;
 using Evergine.Mathematics;
 using static BulletSharp.UnsafeNativeMethods;
 using static BulletSharp.EvergineUnsafeNativeMethods;
 using System.Runtime.InteropServices.ComTypes;
 using System.Runtime.CompilerServices;
 using System.Collections.Specialized;
-using Evergine.Common.Graphics;
 
 namespace BulletSharp
 {
