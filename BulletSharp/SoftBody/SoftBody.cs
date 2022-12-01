@@ -353,7 +353,7 @@ namespace BulletSharp.SoftBody
 
 	public class Anchor : BulletObject
 	{
-		private Node _node;
+		private SoftBodyNode _node;
 
 		internal Anchor(IntPtr native)
 		{
@@ -411,14 +411,14 @@ namespace BulletSharp.SoftBody
 			set => btSoftBody_Anchor_setLocal(Native, ref value);
 		}
 
-		public Node Node
+		public SoftBodyNode Node
 		{
 			get
 			{
 				IntPtr nodePtr = btSoftBody_Anchor_getNode(Native);
 				if (_node != null && _node.Native == nodePtr) return _node;
 				if (nodePtr == IntPtr.Zero) return null;
-				_node = new Node(nodePtr);
+				_node = new SoftBodyNode(nodePtr);
 				return _node;
 			}
 			set
@@ -1175,21 +1175,21 @@ namespace BulletSharp.SoftBody
 
 	public class Feature : Element
 	{
-		private Material _material;
+		private SoftBodyMaterial _material;
 
 		internal Feature(IntPtr native)
 			: base(native)
 		{
 		}
 
-		public Material Material
+		public SoftBodyMaterial Material
 		{
 			get
 			{
 				IntPtr materialPtr = btSoftBody_Feature_getMaterial(Native);
 				if (_material != null && _material.Native == materialPtr) return _material;
 				if (materialPtr == IntPtr.Zero) return null;
-				_material = new Material(materialPtr);
+				_material = new SoftBodyMaterial(materialPtr);
 				return _material;
 			}
 			set
@@ -1571,9 +1571,9 @@ namespace BulletSharp.SoftBody
 		}
 	}
 
-	public class Material : Element
+	public class SoftBodyMaterial : Element
 	{
-		internal Material(IntPtr native)
+		internal SoftBodyMaterial(IntPtr native)
 			: base(native)
 		{
 		}
@@ -1603,11 +1603,11 @@ namespace BulletSharp.SoftBody
 		}
 	}
 
-	public class Node : Feature
+	public class SoftBodyNode : Feature
 	{
 		private DbvtNode _leaf;
 
-		internal Node(IntPtr native)
+		internal SoftBodyNode(IntPtr native)
 			: base(native)
 		{
 		}
@@ -1771,14 +1771,14 @@ namespace BulletSharp.SoftBody
 		}
 	}
 
-	public class Pose
+	public class SoftBodyPose
 	{
 		internal IntPtr Native;
 
 		private AlignedVector3Array _pos;
 		//private AlignedScalarArray _wgh;
 
-		internal Pose(IntPtr native)
+		internal SoftBodyPose(IntPtr native)
 		{
 			Native = native;
 		}
@@ -1959,7 +1959,7 @@ namespace BulletSharp.SoftBody
 	{
 		internal IntPtr Native;
 
-		private Node _node;
+		private SoftBodyNode _node;
 		private ContactInfo _cti;
 
 		internal RigidContact(IntPtr native)
@@ -2024,14 +2024,14 @@ namespace BulletSharp.SoftBody
 			}
 		}
 
-		public Node Node
+		public SoftBodyNode Node
 		{
 			get
 			{
 				IntPtr nodePtr = btSoftBody_RContact_getNode(Native);
 				if (_node != null && _node.Native == nodePtr) return _node;
 				if (nodePtr == IntPtr.Zero) return null;
-				_node = new Node(nodePtr);
+				_node = new SoftBodyNode(nodePtr);
 				return _node;
 			}
 			set
@@ -2148,7 +2148,7 @@ namespace BulletSharp.SoftBody
 
 		//private ScalarArray _cfm;
 		private Face _face;
-		private Node _node;
+		private SoftBodyNode _node;
 
 		internal SoftContact(IntPtr native)
 		{
@@ -2205,14 +2205,14 @@ namespace BulletSharp.SoftBody
 			set => btSoftBody_SContact_setMargin(Native, value);
 		}
 
-		public Node Node
+		public SoftBodyNode Node
 		{
 			get
 			{
 				IntPtr nodePtr = btSoftBody_SContact_getNode(Native);
 				if (_node != null && _node.Native == nodePtr) return _node;
 				if (nodePtr == IntPtr.Zero) return null;
-				_node = new Node(nodePtr);
+				_node = new SoftBodyNode(nodePtr);
 				return _node;
 			}
 			set
@@ -2422,7 +2422,7 @@ namespace BulletSharp.SoftBody
 		private Dbvt _nodeDbvt;
 		private AlignedNodeArray _nodes;
 		private AlignedNoteArray _notes;
-		private Pose _pose;
+		private SoftBodyPose _pose;
 		//private AlignedRigidContactArray _rigidContacts;
 		//private AlignedSoftContactArray _softContacts;
 		private SoftBodySolver _softBodySolver;
@@ -2543,12 +2543,12 @@ namespace BulletSharp.SoftBody
 			btSoftBody_appendAngularJoint4(Native, specs.Native, body0.Native, body1.Native);
 		}
 
-		public void AppendFace(int model = -1, Material mat = null)
+		public void AppendFace(int model = -1, SoftBodyMaterial mat = null)
 		{
 			btSoftBody_appendFace(Native, model, mat != null ? mat.Native : IntPtr.Zero);
 		}
 
-		public void AppendFace(int node0, int node1, int node2, Material mat = null)
+		public void AppendFace(int node0, int node1, int node2, SoftBodyMaterial mat = null)
 		{
 			btSoftBody_appendFace2(Native, node0, node1, node2, mat != null ? mat.Native : IntPtr.Zero);
 		}
@@ -2573,24 +2573,24 @@ namespace BulletSharp.SoftBody
 			btSoftBody_appendLinearJoint4(Native, specs.Native, body0.Native, body1.Native);
 		}
 
-		public void AppendLink(int node0, int node1, Material mat = null, bool checkExist = false)
+		public void AppendLink(int node0, int node1, SoftBodyMaterial mat = null, bool checkExist = false)
 		{
 			btSoftBody_appendLink(Native, node0, node1, (mat != null) ? mat.Native : IntPtr.Zero, checkExist);
 		}
 
-		public void AppendLink(int model = -1, Material mat = null)
+		public void AppendLink(int model = -1, SoftBodyMaterial mat = null)
 		{
 			btSoftBody_appendLink2(Native, model, (mat != null) ? mat.Native : IntPtr.Zero);
 		}
 
-		public void AppendLink(Node node0, Node node1, Material mat = null, bool checkExist = false)
+		public void AppendLink(SoftBodyNode node0, SoftBodyNode node1, SoftBodyMaterial mat = null, bool checkExist = false)
 		{
 			btSoftBody_appendLink3(Native, node0.Native, node1.Native, (mat != null) ? mat.Native : IntPtr.Zero, checkExist);
 		}
 
-		public Material AppendMaterial()
+		public SoftBodyMaterial AppendMaterial()
 		{
-			return new Material(btSoftBody_appendMaterial(Native));
+			return new SoftBodyMaterial(btSoftBody_appendMaterial(Native));
 		}
 
 		public void AppendNode(Vector3 x, float m)
@@ -2608,7 +2608,7 @@ namespace BulletSharp.SoftBody
 			btSoftBody_appendNote2(Native, Marshal.StringToHGlobalAnsi(text), ref o, feature.Native);
 		}
 
-		public void AppendNote(string text, Vector3 o, Node feature)
+		public void AppendNote(string text, Vector3 o, SoftBodyNode feature)
 		{
 			btSoftBody_appendNote3(Native, Marshal.StringToHGlobalAnsi(text), ref o, feature.Native);
 		}
@@ -2619,7 +2619,7 @@ namespace BulletSharp.SoftBody
 		}
 
 		public void AppendNote(string text, Vector3 o, Vector4 c,
-			Node n0 = null, Node n1 = null, Node n2 = null, Node n3 = null)
+			SoftBodyNode n0 = null, SoftBodyNode n1 = null, SoftBodyNode n2 = null, SoftBodyNode n3 = null)
 		{
 			btSoftBody_appendNote5(Native, Marshal.StringToHGlobalAnsi(text), ref o, ref c,
 				n0 != null ? n0.Native : IntPtr.Zero,
@@ -2628,12 +2628,12 @@ namespace BulletSharp.SoftBody
 				n3 != null ? n3.Native : IntPtr.Zero);
 		}
 
-		public void AppendTetra(int model, Material mat)
+		public void AppendTetra(int model, SoftBodyMaterial mat)
 		{
 			btSoftBody_appendTetra(Native, model, mat != null ? mat.Native : IntPtr.Zero);
 		}
 
-		public void AppendTetra(int node0, int node1, int node2, int node3, Material mat = null)
+		public void AppendTetra(int node0, int node1, int node2, int node3, SoftBodyMaterial mat = null)
 		{
 			btSoftBody_appendTetra2(Native, node0, node1, node2, node3, mat != null ? mat.Native : IntPtr.Zero);
 		}
@@ -2667,7 +2667,7 @@ namespace BulletSharp.SoftBody
 			return btSoftBody_checkFace(Native, node0, node1, node2);
 		}
 
-		public bool CheckLink(Node node0, Node node1)
+		public bool CheckLink(SoftBodyNode node0, SoftBodyNode node1)
 		{
 			return btSoftBody_checkLink(Native, node0.Native, node1.Native);
 		}
@@ -2744,7 +2744,7 @@ namespace BulletSharp.SoftBody
 			btSoftBody_clusterVImpulse(cluster.Native, ref rpos, ref impulse);
 		}
 
-		public bool CutLink(Node node0, Node node1, float position)
+		public bool CutLink(SoftBodyNode node0, SoftBodyNode node1, float position)
 		{
 			return btSoftBody_cutLink(Native, node0.Native, node1.Native, position);
 		}
@@ -2776,7 +2776,7 @@ namespace BulletSharp.SoftBody
 			return value;
 		}
 
-		public int GenerateBendingConstraints(int distance, Material mat = null)
+		public int GenerateBendingConstraints(int distance, SoftBodyMaterial mat = null)
 		{
 			return btSoftBody_generateBendingConstraints(Native, distance, mat != null ? mat.Native : IntPtr.Zero);
 		}
@@ -3392,13 +3392,13 @@ namespace BulletSharp.SoftBody
 			}
 		}
 
-		public Pose Pose
+		public SoftBodyPose Pose
 		{
 			get
 			{
 				if (_pose == null)
 				{
-					_pose = new Pose(btSoftBody_getPose(Native));
+					_pose = new SoftBodyPose(btSoftBody_getPose(Native));
 				}
 				return _pose;
 			}

@@ -313,7 +313,7 @@ namespace BulletSharp.SoftBody
 		private static void GenerateBoundaryFaces(SoftBody body)
 		{
 			int counter = 0;
-			foreach (Node node in body.Nodes)
+			foreach (SoftBodyNode node in body.Nodes)
 			{
 				node.Index = counter++;
 			}
@@ -536,7 +536,7 @@ namespace BulletSharp.SoftBody
 		{
 			if (masses || areas)
 			{
-				foreach (Node node in psb.Nodes)
+				foreach (SoftBodyNode node in psb.Nodes)
 				{
 					string text = string.Empty;
 					if (masses)
@@ -578,15 +578,15 @@ namespace BulletSharp.SoftBody
 			List<Link> readyList = new List<Link>();
 			Dictionary<Link, Link> linkBuffer = new Dictionary<Link, Link>();
 			Dictionary<Link, LinkDep> linkDeps = new Dictionary<Link, LinkDep>();
-			Dictionary<Node, Link> nodeWrittenAt = new Dictionary<Node, Link>();
+			Dictionary<SoftBodyNode, Link> nodeWrittenAt = new Dictionary<SoftBodyNode, Link>();
 
 			Dictionary<Link, Link> linkDepA = new Dictionary<Link, Link>(); // Link calculation input is dependent upon prior calculation #N
 			Dictionary<Link, Link> linkDepB = new Dictionary<Link, Link>();
 
 			foreach (Link link in links)
 			{
-				Node ar = link.Nodes[0];
-				Node br = link.Nodes[1];
+				SoftBodyNode ar = link.Nodes[0];
+				SoftBodyNode br = link.Nodes[1];
 				linkBuffer.Add(link, new Link(btSoftBody_Link_new2(link.Native)));
 
 				LinkDep linkDep;

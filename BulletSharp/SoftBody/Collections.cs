@@ -4,13 +4,13 @@ using static BulletSharp.UnsafeNativeMethods;
 
 namespace BulletSharp.SoftBody
 {
-	public class NodePtrArrayEnumerator : IEnumerator<Node>
+	public class NodePtrArrayEnumerator : IEnumerator<SoftBodyNode>
 	{
 		private int _i;
 		private int _count;
-		private IList<Node> _array;
+		private IList<SoftBodyNode> _array;
 
-		public NodePtrArrayEnumerator(IList<Node> array)
+		public NodePtrArrayEnumerator(IList<SoftBodyNode> array)
 		{
 			_array = array;
 			_count = array.Count;
@@ -32,24 +32,24 @@ namespace BulletSharp.SoftBody
 			_i = 0;
 		}
 
-		public Node Current => _array[_i];
+		public SoftBodyNode Current => _array[_i];
 
 		object System.Collections.IEnumerator.Current => _array[_i];
 	}
 
-	public class NodePtrArray : FixedSizeArray<Node>, IList<Node>
+	public class NodePtrArray : FixedSizeArray<SoftBodyNode>, IList<SoftBodyNode>
 	{
 		internal NodePtrArray(IntPtr native, int count)
 			: base(native, count)
 		{
 		}
 
-		public int IndexOf(Node item)
+		public int IndexOf(SoftBodyNode item)
 		{
 			throw new NotImplementedException();
 		}
 
-		public Node this[int index]
+		public SoftBodyNode this[int index]
 		{
 			get
 			{
@@ -57,7 +57,7 @@ namespace BulletSharp.SoftBody
 				{
 					throw new ArgumentOutOfRangeException(nameof(index));
 				}
-				return new Node(btSoftBodyNodePtrArray_at(Native, index));
+				return new SoftBodyNode(btSoftBodyNodePtrArray_at(Native, index));
 			}
 			set
 			{
@@ -65,17 +65,17 @@ namespace BulletSharp.SoftBody
 			}
 		}
 
-		public bool Contains(Node item)
+		public bool Contains(SoftBodyNode item)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void CopyTo(Node[] array, int arrayIndex)
+		public void CopyTo(SoftBodyNode[] array, int arrayIndex)
 		{
 			throw new NotImplementedException();
 		}
 
-		public IEnumerator<Node> GetEnumerator()
+		public IEnumerator<SoftBodyNode> GetEnumerator()
 		{
 			return new NodePtrArrayEnumerator(this);
 		}

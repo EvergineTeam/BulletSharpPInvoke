@@ -15,12 +15,12 @@ namespace BulletSharp.SoftBody
 		}
 
 		[DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
-		public Node[] Items
+		public SoftBodyNode[] Items
 		{
 			get
 			{
 				int count = _array.Count;
-				var array = new Node[count];
+				var array = new SoftBodyNode[count];
 				for (int i = 0; i < count; i++)
 				{
 					array[i] = _array[i];
@@ -30,7 +30,7 @@ namespace BulletSharp.SoftBody
 		}
 	}
 
-	public class AlignedNodeArrayEnumerator : IEnumerator<Node>
+	public class AlignedNodeArrayEnumerator : IEnumerator<SoftBodyNode>
 	{
 		private int _i;
 		private int _count;
@@ -43,7 +43,7 @@ namespace BulletSharp.SoftBody
 			_i = -1;
 		}
 
-		public Node Current => _array[_i];
+		public SoftBodyNode Current => _array[_i];
 
 		public void Dispose()
 		{
@@ -64,19 +64,19 @@ namespace BulletSharp.SoftBody
 	}
 
 	[Serializable, DebuggerTypeProxy(typeof(AlignedNodeArrayDebugView)), DebuggerDisplay("Count = {Count}")]
-	public class AlignedNodeArray : BulletObject, IList<Node>
+	public class AlignedNodeArray : BulletObject, IList<SoftBodyNode>
 	{
 		internal AlignedNodeArray(IntPtr native)
 		{
 			Initialize(native);
 		}
 
-		public int IndexOf(Node item)
+		public int IndexOf(SoftBodyNode item)
 		{
 			return btAlignedObjectArray_btSoftBody_Node_index_of(Native, item.Native);
 		}
 
-		public void Insert(int index, Node item)
+		public void Insert(int index, SoftBodyNode item)
 		{
 			throw new NotImplementedException();
 		}
@@ -86,7 +86,7 @@ namespace BulletSharp.SoftBody
 			throw new NotImplementedException();
 		}
 
-		public Node this[int index]
+		public SoftBodyNode this[int index]
 		{
 			get
 			{
@@ -94,7 +94,7 @@ namespace BulletSharp.SoftBody
 				{
 					throw new ArgumentOutOfRangeException(nameof(index));
 				}
-				return new Node(btAlignedObjectArray_btSoftBody_Node_at(Native, index));
+				return new SoftBodyNode(btAlignedObjectArray_btSoftBody_Node_at(Native, index));
 			}
 			set
 			{
@@ -102,7 +102,7 @@ namespace BulletSharp.SoftBody
 			}
 		}
 
-		public void Add(Node item)
+		public void Add(SoftBodyNode item)
 		{
 			btAlignedObjectArray_btSoftBody_Node_push_back(Native, item.Native);
 		}
@@ -112,12 +112,12 @@ namespace BulletSharp.SoftBody
 			btAlignedObjectArray_btSoftBody_Node_resizeNoInitialize(Native, 0);
 		}
 
-		public bool Contains(Node item)
+		public bool Contains(SoftBodyNode item)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void CopyTo(Node[] array, int arrayIndex)
+		public void CopyTo(SoftBodyNode[] array, int arrayIndex)
 		{
 			throw new NotImplementedException();
 		}
@@ -126,12 +126,12 @@ namespace BulletSharp.SoftBody
 
 		public bool IsReadOnly => false;
 
-		public bool Remove(Node item)
+		public bool Remove(SoftBodyNode item)
 		{
 			throw new NotImplementedException();
 		}
 
-		public IEnumerator<Node> GetEnumerator()
+		public IEnumerator<SoftBodyNode> GetEnumerator()
 		{
 			return new AlignedNodeArrayEnumerator(this);
 		}

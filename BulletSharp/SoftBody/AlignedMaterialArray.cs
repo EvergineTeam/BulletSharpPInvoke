@@ -15,12 +15,12 @@ namespace BulletSharp.SoftBody
 		}
 
 		[DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
-		public Material[] Items
+		public SoftBodyMaterial[] Items
 		{
 			get
 			{
 				int count = _array.Count;
-				var array = new Material[count];
+				var array = new SoftBodyMaterial[count];
 				for (int i = 0; i < count; i++)
 				{
 					array[i] = _array[i];
@@ -30,7 +30,7 @@ namespace BulletSharp.SoftBody
 		}
 	}
 
-	public class AlignedMaterialArrayEnumerator : IEnumerator<Material>
+	public class AlignedMaterialArrayEnumerator : IEnumerator<SoftBodyMaterial>
 	{
 		private int _i;
 		private int _count;
@@ -43,7 +43,7 @@ namespace BulletSharp.SoftBody
 			_i = -1;
 		}
 
-		public Material Current => _array[_i];
+		public SoftBodyMaterial Current => _array[_i];
 
 		public void Dispose()
 		{
@@ -64,19 +64,19 @@ namespace BulletSharp.SoftBody
 	}
 
 	[Serializable, DebuggerTypeProxy(typeof(AlignedMaterialArrayDebugView)), DebuggerDisplay("Count = {Count}")]
-	public class AlignedMaterialArray : BulletObject, IList<Material>
+	public class AlignedMaterialArray : BulletObject, IList<SoftBodyMaterial>
 	{
 		internal AlignedMaterialArray(IntPtr native)
 		{
 			Initialize(native);
 		}
 
-		public int IndexOf(Material item)
+		public int IndexOf(SoftBodyMaterial item)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void Insert(int index, Material item)
+		public void Insert(int index, SoftBodyMaterial item)
 		{
 			throw new NotImplementedException();
 		}
@@ -86,7 +86,7 @@ namespace BulletSharp.SoftBody
 			throw new NotImplementedException();
 		}
 
-		public Material this[int index]
+		public SoftBodyMaterial this[int index]
 		{
 			get
 			{
@@ -94,7 +94,7 @@ namespace BulletSharp.SoftBody
 				{
 					throw new ArgumentOutOfRangeException(nameof(index));
 				}
-				return new Material(btAlignedObjectArray_btSoftBody_MaterialPtr_at(Native, index));
+				return new SoftBodyMaterial(btAlignedObjectArray_btSoftBody_MaterialPtr_at(Native, index));
 			}
 			set
 			{
@@ -102,7 +102,7 @@ namespace BulletSharp.SoftBody
 			}
 		}
 
-		public void Add(Material item)
+		public void Add(SoftBodyMaterial item)
 		{
 			btAlignedObjectArray_btSoftBody_MaterialPtr_push_back(Native, item.Native);
 		}
@@ -112,12 +112,12 @@ namespace BulletSharp.SoftBody
 			btAlignedObjectArray_btSoftBody_MaterialPtr_resizeNoInitialize(Native, 0);
 		}
 
-		public bool Contains(Material item)
+		public bool Contains(SoftBodyMaterial item)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void CopyTo(Material[] array, int arrayIndex)
+		public void CopyTo(SoftBodyMaterial[] array, int arrayIndex)
 		{
 			throw new NotImplementedException();
 		}
@@ -126,12 +126,12 @@ namespace BulletSharp.SoftBody
 
 		public bool IsReadOnly => false;
 
-		public bool Remove(Material item)
+		public bool Remove(SoftBodyMaterial item)
 		{
 			throw new NotImplementedException();
 		}
 
-		public IEnumerator<Material> GetEnumerator()
+		public IEnumerator<SoftBodyMaterial> GetEnumerator()
 		{
 			return new AlignedMaterialArrayEnumerator(this);
 		}
