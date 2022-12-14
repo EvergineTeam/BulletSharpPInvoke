@@ -32,120 +32,196 @@ namespace BulletSharp
             DrawTriangle
         };
 
-
+        [StructLayout(LayoutKind.Explicit, Size =36)]
         public struct CommandDrawAAbb
         {
+            [FieldOffset(0)]
             public Vector3 from;
+            [FieldOffset(12)]
             public Vector3 to;
+            [FieldOffset(24)]
             public Vector3 color;
         };
 
+        [StructLayout(LayoutKind.Explicit, Size = 72)]
         public struct CommandDrawArc
         {
+            [FieldOffset(0)]
             public Vector3 center;
+            [FieldOffset(12)]
             public Vector3 normal;
+            [FieldOffset(24)]
             public Vector3 axis;
+            [FieldOffset(36)]
             public float radiusA;
+            [FieldOffset(40)]
             public float radiusB;
+            [FieldOffset(44)]
             public float minAngle;
+            [FieldOffset(48)]
             public float maxAngle;
+            [FieldOffset(52)]
             public Vector3 color;
+            [FieldOffset(64)]
             public bool drawSect;
+            [FieldOffset(68)]
             public float stepDegrees;
         };
 
+        [StructLayout(LayoutKind.Explicit, Size = 100)]
         public struct CommandDrawBox
         {
+            [FieldOffset (0)]
             public Vector3 bbMin;
+            [FieldOffset(12)]
             public Vector3 bbMax;
+            [FieldOffset(24)]
             public Matrix4x4 trans;
+            [FieldOffset(88)]
             public Vector3 color;
         };
 
+        [StructLayout(LayoutKind.Explicit, Size = 88)]
         public struct CommandDrawCapsule
         {
+            [FieldOffset(0)]
             public float radius;
+            [FieldOffset(4)]
             public float halfHeight;
+            [FieldOffset(8)]
             public int upAxis;
+            [FieldOffset(12)]
             public Matrix4x4 trans;
+            [FieldOffset(76)]
             public Vector3 color;
         };
 
+        [StructLayout(LayoutKind.Explicit, Size = 88)]
         public struct CommandDrawCone
         {
+            [FieldOffset(0)]
             public float radius;
+            [FieldOffset(4)]
             public float height;
+            [FieldOffset(8)]
             public int upAxis;
+            [FieldOffset(12)]
             public Matrix4x4 trans;
+            [FieldOffset(76)]
             public Vector3 color;
         };
 
+        [StructLayout(LayoutKind.Explicit, Size = 44)]
         public struct CommandDrawContactPoint
         {
+            [FieldOffset(0)]
             public Vector3 PointOnB;
+            [FieldOffset(12)]
             public Vector3 normalOnB;
+            [FieldOffset(24)]
             public float distance;
+            [FieldOffset(28)]
             public int lifeTime;
+            [FieldOffset(32)]
             public Vector3 color;
         };
 
+        [StructLayout(LayoutKind.Explicit, Size = 88)]
         public struct CommandDrawCylinder
         {
+            [FieldOffset(0)]
             public float radius;
+            [FieldOffset(4)]
             public float halfHeight;
+            [FieldOffset(8)]
             public int upAxis;
+            [FieldOffset(12)]
             public Matrix4x4 trans;
+            [FieldOffset(76)]
             public Vector3 color;
         };
 
+        [StructLayout(LayoutKind.Explicit, Size = 36)]
         public struct CommandDrawLine
         {
+            [FieldOffset(0)]
             public Vector3 from;
+            [FieldOffset(12)]
             public Vector3 to;
+            [FieldOffset(24)]
             public Vector3 color;
         };
 
+        [StructLayout(LayoutKind.Explicit, Size = 92)]
         public struct CommandDrawPlane
         {
+            [FieldOffset(0)]
             public Vector3 planeNormal;
+            [FieldOffset(12)]
             public float planeConst;
+            [FieldOffset(16)]
             public Matrix4x4 trans;
+            [FieldOffset(80)]
             public Vector3 color;
         };
 
+        [StructLayout(LayoutKind.Explicit, Size = 80)]
         public struct CommandDrawSphere
         {
+            [FieldOffset(0)]
             public float radius;
+            [FieldOffset(4)]
             public Matrix4x4 trans;
+            [FieldOffset(68)]
             public Vector3 color;
         };
 
+        [StructLayout(LayoutKind.Explicit, Size = 62)]
         public struct CommandDrawSpherePatch
         {
+            [FieldOffset(0)]
             public Vector3 center;
+            [FieldOffset(12)]
             public Vector3 up;
+            [FieldOffset(24)]
             public Vector3 axis;
+            [FieldOffset(36)]
             public float radius;
+            [FieldOffset(40)]
             public float minTh;
+            [FieldOffset(44)]
             public float maxTh;
+            [FieldOffset(48)]
             public float minPs;
+            [FieldOffset(42)]
             public float maxPs;
+            [FieldOffset(46)]
             public Vector3 color;
+            [FieldOffset(58)]
             public float stepDegrees;
         };
 
+        [StructLayout(LayoutKind.Explicit, Size = 68)]
         public struct CommandDrawTransform
         {
-            public float orthoLen;
+            [FieldOffset(0)]
             public Matrix4x4 trans;
+            [FieldOffset(64)]
+            public float orthoLen;
         };
 
+        [StructLayout(LayoutKind.Explicit, Size = 52)]
         public struct CommandDrawTriangle
         {
+            [FieldOffset(0)]
             public Vector3 v0;
+            [FieldOffset(12)]
             public Vector3 v1;
+            [FieldOffset(24)]
             public Vector3 v2;
+            [FieldOffset(36)]
             public Vector3 color;
+            [FieldOffset(48)]
             public float alpha;
         };
 
@@ -189,9 +265,6 @@ namespace BulletSharp
             btEvergineDebugDrawWrapper_getDrawInformation(this.Native, out var commandCounter, out var buffer);
 
             var ptr = buffer.ToInt64();
-
-            var sizeDrawBox = sizeof(CommandDrawBox);
-            var sizeDrawSphere = sizeof(CommandDrawSphere);
 
             for (int i = 0; i < commandCounter; i++)
             {
