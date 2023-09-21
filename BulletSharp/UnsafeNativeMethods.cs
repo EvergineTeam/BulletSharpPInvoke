@@ -676,8 +676,8 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv)]
 		public static extern void btCollisionAlgorithmCreateFunc_delete(IntPtr obj);
 
-		[DllImport(Native.Dll, CallingConvention = Native.Conv)]
-		public static extern IntPtr btCollisionConfiguration_getClosestPointsAlgorithmCreateFunc(IntPtr obj, int proxyType0, int proxyType1);
+		////[DllImport(Native.Dll, CallingConvention = Native.Conv)]
+		////public static extern IntPtr btCollisionConfiguration_getClosestPointsAlgorithmCreateFunc(IntPtr obj, int proxyType0, int proxyType1);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv)]
 		public static extern IntPtr btCollisionConfiguration_getCollisionAlgorithmCreateFunc(IntPtr obj, int proxyType0, int proxyType1);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv)]

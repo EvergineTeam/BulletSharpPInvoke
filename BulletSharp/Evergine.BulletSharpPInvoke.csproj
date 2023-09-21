@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>netstandard2.0;net7.0-ios</TargetFrameworks>
     <Description>Provides a wrapper C# wrapper for Evergine of Bullet physic engine using PInvoke. </Description>
     <PackageTags>Evergine;C#;Game Engine;DirectX;OpenGL;OpenGLES;Vulkan;Metal;2D;3D;AR;VR;MixedReality;Mobile;HoloLens</PackageTags>
     <DisableStyleCop>true</DisableStyleCop>

@@ -4,7 +4,7 @@ namespace BulletSharp
 {
     public static class Native
     {
-#if IOS
+#if __IOS__
         public const string Dll = "__Internal";
 #else
         public const string Dll = "libbulletc";

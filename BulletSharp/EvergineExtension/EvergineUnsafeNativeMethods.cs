@@ -58,8 +58,8 @@ namespace BulletSharp
 
 
 
-        [DllImport(Native.Dll, CallingConvention = Native.Conv)]
-        public static extern void btIDebugDraw_setDefaultColors(IntPtr obj, IntPtr defaultColors);
+        ////[DllImport(Native.Dll, CallingConvention = Native.Conv)]
+        ////public static extern void btIDebugDraw_setDefaultColors(IntPtr obj, IntPtr defaultColors);
 
         [DllImport(Native.Dll, CallingConvention = Native.Conv)]
         public static extern IntPtr btConvexHullShape_new4(IntPtr pointsPtr, int numPoints, int stride);
